@@ -1,0 +1,1 @@
+from gitgo.objectstore.objectstore import ObjectStore

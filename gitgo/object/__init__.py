@@ -1,0 +1,1 @@
+from gitgo.object.gitobj import GitObj, Oid, is_oid
