@@ -20,15 +20,5 @@
     },
     "hide-files.files": [],
     "workspace.isHidden": true,
-    "explorerExclude.backup": {
-        "**/.git": true,
-        "**/.svn": true,
-        "**/.hg": true,
-        "**/CVS": true,
-        "**/.DS_Store": true,
-        "**/Thumbs.db": true,
-        "**/*.crswap": true,
-        ".vscode": true,
-        "**/__init__.py": true
-    }
+    "explorerExclude.backup": {}
 }
