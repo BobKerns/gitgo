@@ -43,6 +43,8 @@ class LocalRepo(Repo):
     main worktree, and are called "linked worktrees". They are
     distinguished from "detached worktrees", which are worktrees that
     have their own .git directory.
+
+    Only local repos can gi ve us full GitObj objects.
     '''
     path: Path
     worktrees: List[Worktree]
