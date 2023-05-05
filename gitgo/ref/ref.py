@@ -1,10 +1,13 @@
-from typing import Optional
+from typing import Optional, NewType
 
 from gitgo.repo import Repo
 
 SymbolicRef = NewType('SymbolicRef', str)
 
 class GitRef:
+    '''
+    A GitRef is a reference to a Git object, denoted by a SHA-1 or SHA-256 hash.
+    '''
     repo: Repo
     name: str
     path: str

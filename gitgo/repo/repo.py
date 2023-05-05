@@ -2,9 +2,9 @@ from typing import List, Optional
 from dataclasses import dataclass
 from typing import NewType
 from pathlib import Path
-from gitgo.worktree import Worktree
-from gitgo.ref import GitRef
-from gitgo.backend import BackendRepo
+from worktree import Worktree
+from ref import GitRef
+from backend import BackendRepo
 
 @dataclass
 class Repo:

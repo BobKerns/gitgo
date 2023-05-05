@@ -1,1 +1,7 @@
-from gitgo.backend.backend import Backend, BackendObjectStore, BackendRepo
+from gitgo.backend.backend import Backend, BackendRepo, BackendObjectStore
+
+export =[
+    Backend,
+    BackendRepo,
+    BackendObjectStore
+]

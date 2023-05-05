@@ -1,4 +1,4 @@
-from typing import Any
+
 from ref import GitRef
 from repo import Repo
 

@@ -1,1 +1,7 @@
-from repo import Repo
+from gitgo.repo.repo import Repo, LocalRepo, RemoteRepo
+
+exports = [
+    Repo,
+    LocalRepo,
+    RemoteRepo,
+]

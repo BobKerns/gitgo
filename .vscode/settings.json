@@ -15,10 +15,19 @@
         "**/.DS_Store": true,
         "**/Thumbs.db": true,
         "**/*.crswap": true,
-        ".vscode": true,
-        "**/__init__.py": true
+        "*.json": true,
+        "**/__init__.py": true,
+        "**/__pycache__": true,
+        "requirements.txt": true,
+        "pyproject.toml": true,
+        "**/.gitignore": true,
+        "venv": true,
+        "LICENSE": true,
+        "bin": true
     },
     "hide-files.files": [],
     "workspace.isHidden": true,
-    "explorerExclude.backup": {}
+    "explorerExclude.backup": {
+
+    }
 }

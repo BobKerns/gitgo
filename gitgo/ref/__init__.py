@@ -1,1 +1,6 @@
-from ref import GitRef
+from gitgo.ref.ref import GitRef, SymbolicRef
+
+exports = [
+    GitRef,
+    SymbolicRef,
+]

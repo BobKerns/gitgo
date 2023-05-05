@@ -1,19 +1,19 @@
 from dataclasses import dataclass, field
 from typing import Iterator, overload, Generic, Optional, Literal, Set
-from gitgo.backend import BackendRepo
+from backend import BackendRepo
 
-from gitgo.object import Oid
-from gitgo.object.gitobj import T_IndexType, ObjIType
+from object import Oid
+from object.gitobj import T_IndexType, ObjIType
 
 # ruff: noqa: E501
 
-ellipsis = type(...)
+Ellipsis = type(...)
 
 FileMode = Literal[0o755, 0o644, 0]
 
 Idx_Flag = Literal['assume-valid', 'skip-worktree', 'intent-to-add']
 
-_timestamp = tuple[int, int]
+Timestamp = float
 
 @dataclass
 class IndexEntry(Generic[T_IndexType]):
@@ -24,8 +24,8 @@ class IndexEntry(Generic[T_IndexType]):
     type: T_IndexType
     oid: Oid
     mode: FileMode
-    ctime: _timestamp
-    mtime: _timestamp
+    ctime: Timestamp
+    mtime: Timestamp
     dev: int
     ino: int
     uid: int
@@ -45,7 +45,7 @@ _Entries = tuple[
     ]
 _Stage_idx = Literal[0, 1, 2, 3]
 _Stage_oid = tuple[_Stage_idx, Oid]
-_Ellipse_oid = tuple[ellipsis, Oid]  # How could I resist this name?
+_Ellipse_oid = tuple[Ellipsis, Oid]  # How could I resist this name?
 
 @dataclass
 class GitIndex:
@@ -108,7 +108,7 @@ class GitIndex:
                 return stages[0].get(oid, None)
             case (0|1|2 as idx, Oid() as oid):
                 return stages[idx].get(oid, None)
-            case (ellipsis(), Oid() as oid):
+            case (Ellipsis(), Oid() as oid):
                 return (
                     stages[0].get(oid, None),
                     stages[1].get(oid, None),
@@ -127,7 +127,7 @@ class GitIndex:
                 del stages[3][oid]
             case (0|1|2|3 as sidx, Oid() as oid):
                 del stages[sidx][oid]
-            case (ellipsis(), Oid() as oid):
+            case (Ellipsis(), Oid() as oid):
                 del stages[0][oid]
                 del stages[1][oid]
                 del stages[2][oid]
@@ -155,7 +155,7 @@ class GitIndex:
                     raise TypeError(f'Expected IndexEntry, got {type(entry)}')
                 stages[sidx][oid] = entry
                 del stages[0][oid]
-            case (ellipsis(), Oid() as oid):
+            case (Ellipsis(), Oid() as oid):
                 if oid in stages[0] and (
                     oid in stages[1] or
                     oid in stages[2] or
