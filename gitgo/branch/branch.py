@@ -1,6 +1,6 @@
 
-from ref import GitRef
-from repo import Repo
+from gitgo.ref import GitRef
+from gitgo.repo import Repo
 
 class Branch(GitRef):
     '''

@@ -1,9 +1,11 @@
 from dataclasses import dataclass, field
-from typing import Iterator, overload, Generic, Optional, Literal, Set
-from backend import BackendRepo
+from typing import Iterator, overload, Generic, Optional, Literal, Set, TYPE_CHECKING
 
-from object import Oid
-from object.gitobj import T_IndexType, ObjIType
+from gitgo.frontend import FrontendBase
+
+if TYPE_CHECKING:
+    from gitgo.backend import RepoBackend
+from gitgo.object import Oid, T_IndexType, ObjIType
 
 # ruff: noqa: E501
 
@@ -48,7 +50,7 @@ _Stage_oid = tuple[_Stage_idx, Oid]
 _Ellipse_oid = tuple[Ellipsis, Oid]  # How could I resist this name?
 
 @dataclass
-class GitIndex:
+class GitIndex(FrontendBase):
     '''
     A Git index file. This is a four-stage index, with the following
     semantics:
@@ -73,7 +75,7 @@ class GitIndex:
     Thit is, if a file is in stage 0, it cannot be in any of stages 1-3,
     and vice versa.
     '''
-    backend: BackendRepo
+    backend: 'RepoBackend'
     _stages: _Stages = field(init=False, default_factory=lambda : (  
         dict(),
         dict(),

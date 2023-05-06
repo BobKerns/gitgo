@@ -1,18 +1,22 @@
 from typing import List, Optional
 from dataclasses import dataclass
-from typing import NewType
+from typing import NewType, TYPE_CHECKING
 from pathlib import Path
-from worktree import Worktree
-from ref import GitRef
-from backend import BackendRepo
+
+from gitgo.frontend import FrontendBase
+
+from gitgo.backend import RepoBackend
+if TYPE_CHECKING:
+    from gitgo.worktree import Worktree
+    from gitgo.ref import GitRef
 
 @dataclass
-class Repo:
+class Repo(FrontendBase[RepoBackend]):
     ''''
     Any Git repository, local or remote.
     '''
-    backend: BackendRepo
-    refs: dict[str, GitRef]
+    backend: 'RepoBackend'
+    refs: dict[str, 'GitRef']
 
 GitUrl = NewType('GitUrlStr', str) | NewType('GitUrlPath', Path)
 
@@ -47,7 +51,7 @@ class LocalRepo(Repo):
     Only local repos can gi ve us full GitObj objects.
     '''
     path: Path
-    worktrees: List[Worktree]
+    worktrees: List['Worktree']
     remotes: dict[str, 'RemoteRepo']
 
 

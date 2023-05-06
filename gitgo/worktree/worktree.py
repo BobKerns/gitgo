@@ -1,8 +1,11 @@
 from pathlib import Path
 
-from repo import Repo
+from typing import TYPE_CHECKING
+if TYPE_CHECKING:
+    from gitgo.repo import Repo
+from gitgo.frontend import FrontendBase
 
-class Worktree:
+class Worktree(FrontendBase):
     path: Path
-    repo: Repo
+    repo: 'Repo'
     is_attached: bool

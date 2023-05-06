@@ -1,7 +1,17 @@
-from gitgo.backend.backend import Backend, BackendRepo, BackendObjectStore
+from gitgo.backend.backend import Backend, RepoBackend, ObjectStoreBackend, IndexBackend, \
+    WorktreeBackend, TextModes, BinaryModes
+
+from gitgo.backend.base import BackendBase, T_BACKEND, T_FRONTEND
 
 __all__ =[
+    'BackendBase',
     'Backend',
-    'BackendRepo',
-    'BackendObjectStore',
+    'RepoBackend',
+    'ObjectStoreBackend',
+    'IndexBackend',
+    'WorktreeBackend',
+    'TextModes',
+    'BinaryModes',
+    'T_BACKEND',
+    'T_FRONTEND',
 ]
