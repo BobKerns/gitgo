@@ -1,5 +1,5 @@
 from gitgo.objectstore.objectstore import ObjectStore
 
-export = [
-    ObjectStore,
+__all__ = [
+    'ObjectStore',
 ]

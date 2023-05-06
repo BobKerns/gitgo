@@ -1,5 +1,5 @@
 from gitgo.branch.branch import Branch
 
-export = [
-    Branch,
+__all__ = [
+    'Branch',
 ]

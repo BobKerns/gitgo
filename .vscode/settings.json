@@ -23,7 +23,8 @@
         "**/.gitignore": true,
         "venv": true,
         "LICENSE": true,
-        "bin": true
+        "bin": true,
+        ".vscode/**": true
     },
     "hide-files.files": [],
     "workspace.isHidden": true,
