@@ -1,6 +1,6 @@
 from typing import List, Optional
 from dataclasses import dataclass, field
-from typing import NewType, TYPE_CHECKING
+from typing import NewType, Union, TYPE_CHECKING
 from pathlib import Path
 
 
@@ -18,7 +18,7 @@ class Repo(FrontendBase[RepoBackend]):
     def __post_init__(self):
         self.refs = dict()
 
-GitUrl = NewType('GitUrlStr', str) | NewType('GitUrlPath', Path)
+GitUrl = Union[NewType('GitUrlStr', str), NewType('GitUrlPath', Path)]
 
 class RemoteRepo(Repo):
     '''

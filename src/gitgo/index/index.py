@@ -102,7 +102,7 @@ class GitIndex(FrontendBase):
             Optional[IndexEntry[ObjIType]] \
             | _Entries:
         stages = self._stages
-        match (name_or_idx):
+        match name_or_idx:
             case Oid() as oid:
                 return stages[0].get(oid, None)
             case (0|1|2 as idx, Oid() as oid):
@@ -118,7 +118,7 @@ class GitIndex(FrontendBase):
                 raise AttributeError(f'No such attribute: {name_or_idx}')
     def __delitem__(self, idx: Oid|_Stage_oid|_Ellipse_oid, /) -> None:
         stages = self._stages
-        match (idx):
+        match idx:
             case Oid() as oid:
                 del stages[0][oid]
                 del stages[1][oid]
@@ -148,7 +148,7 @@ class GitIndex(FrontendBase):
                     entry: IndexEntry[ObjIType] | _Entries
                     ) -> None:
         stages = self._stages
-        match (idx):
+        match idx:
             case (1|2|3 as sidx, Oid() as oid):
                 if not isinstance(entry, IndexEntry):
                     raise TypeError(f'Expected IndexEntry, got {type(entry)}')
