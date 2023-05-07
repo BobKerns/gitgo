@@ -3,7 +3,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from gitgo.repo import Repo
-from gitgo.frontend import FrontendBase
+from gitgo.frontend.base import FrontendBase
 
 class Worktree(FrontendBase):
     path: Path

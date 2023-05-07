@@ -1,10 +1,8 @@
 from dataclasses import dataclass, field
-from typing import Iterator, overload, Generic, Optional, Literal, Set, TYPE_CHECKING
+from typing import Iterator, overload, Generic, Optional, Literal, Set
 
-from gitgo.frontend import FrontendBase
+from gitgo.frontend.base import FrontendBase
 
-if TYPE_CHECKING:
-    from gitgo.backend import RepoBackend
 from gitgo.object import Oid, T_IndexType, ObjIType
 
 # ruff: noqa: E501
@@ -75,7 +73,6 @@ class GitIndex(FrontendBase):
     Thit is, if a file is in stage 0, it cannot be in any of stages 1-3,
     and vice versa.
     '''
-    backend: 'RepoBackend'
     _stages: _Stages = field(init=False, default_factory=lambda : (  
         dict(),
         dict(),

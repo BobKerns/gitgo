@@ -5,34 +5,25 @@ import io
 
 from gitgo.backend import Backend, BackendBase, RepoBackend, ObjectStoreBackend, WorktreeBackend, IndexBackend, \
     TextModes, BinaryModes
-from gitgo.frontend import Frontend
-from gitgo.repo import Repo
-from gitgo.worktree import Worktree
-from gitgo.objectstore import ObjectStore
-from gitgo.index import GitIndex
 
 class NullBackendBase(BackendBase):
     ...
 
 class NullBackend(Backend, NullBackendBase):
-    def __init__(self, frontend: Frontend, /, **kwargs):
-       super().__init__(frontend, **kwargs)
+    def __init__(self, /, **kwargs):
+       super().__init__(**kwargs)
     
-    def make_repo(self, frontend: Repo, /, **kwargs) -> RepoBackend:
-        backend = NullRepoBackend(frontend, **kwargs)
-        frontend.backend = backend
-        return backend
+    def make_repo(self, /, **kwargs) -> RepoBackend:
+       return  NullRepoBackend(**kwargs)
     
-    def make_worktree(self, frontend: Worktree, path: Path, /, **kwargs) -> WorktreeBackend:
-        backend = NullWorktreeBackend(frontend, path, **kwargs)
-        frontend.backend = backend
-        return backend
+    def make_worktree(self, path: Path, /, **kwargs) -> WorktreeBackend:
+        return NullWorktreeBackend(path, **kwargs)
 
-    def make_object_store(self, frontend: ObjectStore, /, **kwargs) -> ObjectStoreBackend:
-        ...
+    def make_object_store(self, /, **kwargs) -> ObjectStoreBackend:
+        return NullObjectStoreBackend(**kwargs)
 
-    def make_index(self, frontend: GitIndex, **kwargs) -> IndexBackend:
-        ...
+    def make_index(self, **kwargs) -> IndexBackend:
+        return NullIndexBackend(**kwargs)
 
 class NullRepoBackend(RepoBackend, NullBackendBase):
     ...
@@ -44,8 +35,8 @@ class NullIndexBackend(IndexBackend, NullBackendBase):
     ...
 
 class NullWorktreeBackend(WorktreeBackend, NullBackendBase):
-    def __init__(self, frontend: Worktree, path: Path, /, **kwargs):
-        super().__init__(frontend, path, **kwargs)
+    def __init__(self, path: Path, /, **kwargs):
+        super().__init__(path, **kwargs)
 
     def _open_text(self, path: Path, mode: TextModes, **kwargs) -> io.TextIOBase:
         return io.StringIO()

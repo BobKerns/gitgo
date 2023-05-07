@@ -1,7 +1,7 @@
 from typing import Generic, TypeVar, TYPE_CHECKING
 
 if TYPE_CHECKING:
-    from gitgo.frontend import FrontendBase, Frontend
+    from gitgo.frontend import FrontendBase
 
 T_BACKEND = TypeVar('T_BACKEND', bound='BackendBase')
 T_FRONTEND = TypeVar('T_FRONTEND', bound='FrontendBase')
@@ -19,5 +19,5 @@ class BackendBase(Generic[T_FRONTEND]):
     can be tracked and turned into a script'''
     frontend: T_FRONTEND
 
-    def __init__(self, frontend, /, **kwargs):
-        self.frontend = frontend
+    def __init__(self, /, **kwargs):
+        super().__init__(**kwargs)

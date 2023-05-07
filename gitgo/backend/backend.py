@@ -4,75 +4,74 @@ from typing import cast, Literal, overload, TYPE_CHECKING
 from pathlib import Path
 from secrets import token_hex
 
-from gitgo.backend.base import BackendBase
-from gitgo.frontend import Frontend
-
+from gitgo.backend.base import T_FRONTEND, BackendBase
 
 if TYPE_CHECKING:
     from gitgo.index import IndexEntry, FileMode
     from gitgo.object import Oid, GitObj
-    from gitgo.repo import Repo
-    from gitgo.worktree import Worktree
-    from gitgo.objectstore import ObjectStore
-    from gitgo.index import GitIndex
+    from gitgo.repo import Repo  # noqa: F401
+    from gitgo.worktree import Worktree  # noqa: F401
+    from gitgo.objectstore import ObjectStore  # noqa: F401
+    from gitgo.index import GitIndex  # noqa: F401
+    from gitgo.frontend import Frontend  # noqa: F401
 
-class Backend(BackendBase[Frontend]):
+class Backend(BackendBase['Frontend']):
     ''''
-    The Backend corresponds with a Frontend, and acts as a factry to provide
+    The Backend corresponds with a Frontend, and acts as a factory to provide
     the specific backend instances for the frontend.
 
     The Frontend sets the scene as director; the Backend is the stagehand moving props
     and setting up the lighting under the direction of the Frontend.
     '''
-    def __init__(self, frontend: Frontend, /, **kwargs):
-       super().__init__(frontend, **kwargs)
+    def __init__(self, /, **kwargs):
+       super().__init__(**kwargs)
     
     @abstractmethod
-    def make_repo(self, frontend: 'Repo', /, **kwargs) -> 'RepoBackend':
+    def make_repo(self,repo: 'Repo', /, **kwargs) -> 'RepoBackend':
         ...
     
     @abstractmethod
-    def make_worktree(self, frontend: 'Worktree', path: Path, /, **kwargs) -> 'WorktreeBackend':
+    def make_worktree(self, tree: 'Worktree', path: Path, /, **kwargs) -> 'WorktreeBackend':
         ...
 
     @abstractmethod
-    def make_object_store(self, frontend: 'ObjectStore', /, **kwargs) -> 'ObjectStoreBackend':
+    def make_object_store(self, store: 'ObjectStore', /, **kwargs) -> 'ObjectStoreBackend':
         ...
 
     @abstractmethod
-    def make_index(self, frontend: 'GitIndex', **kwargs) -> 'IndexBackend':
+    def make_index(self, index: 'GitIndex', **kwargs) -> 'IndexBackend':
         ...
 
     @classmethod
-    def __init_suubclass(cls):
+    def __init_subclass__(cls,  /, **kwargs):
         '''
         This is called when a subclass is created. It takes care of informing
         the front-end instance of the backend instance.
         '''
-        super().__init_subclass__()
+        super().__init_subclass__(**kwargs)
+
+        print(f'__init_subclass__ called for {cls.__name__}')
         for method in ('make_repo', 'make_worktree', 'make_object_store', 'make_index'):
-            if not hasattr(cls, method):
-                raise TypeError(f'{cls.__name__} must implement {method}')
             m = getattr(cls, method)
-            if not callable(m):
-                raise TypeError(f'{cls.__name__}.{method} must be callable')
-            def wrapper(self, frontend, *args, **kwargs):
-                val = m(frontend, *args, **kwargs)
+            def wrapper(self, frontend: T_FRONTEND, *args, **kwargs) -> T_FRONTEND:
+                print(f'wrapper called for {cls.__name__}.{method}')
+                val = m(self, *args, **kwargs)
                 frontend.backend = val
+                val.frontend = frontend
                 return val
             setattr(cls, method, wrapper)
 
 class RepoBackend(BackendBase['Repo']):
-    def __init__(self, frontend: 'Repo', /, **kwargs):
-        super().__init__(frontend, **kwargs)
+    def __init__(self, /, **kwargs):
+        super().__init__(**kwargs)
     @property
     @abstractmethod
     def object_store(self) -> 'ObjectStoreBackend':
         ...
 
 class ObjectStoreBackend(BackendBase['ObjectStore']):
-    def __init__(self, frontend: 'ObjectStore', /, **kwargs):
-        super().__init__(frontend, **kwargs)
+    def __init__(self, /, **kwargs):
+        super().__init__(**kwargs)
     
     @abstractmethod
     def fetch(self, oid: 'Oid') -> 'GitObj':
@@ -82,8 +81,8 @@ class ObjectStoreBackend(BackendBase['ObjectStore']):
         ...
 
 class IndexBackend(BackendBase['GitIndex']):
-    def __init__(self, frontend: 'GitIndex', /, **kwargs):
-        super().__init__(frontend, **kwargs)
+    def __init__(self, /, **kwargs):
+        super().__init__(**kwargs)
     @abstractmethod
     def fetch(self, oid: 'Oid') -> 'IndexEntry':
         ...
@@ -100,8 +99,8 @@ class WorktreeBackend(BackendBase['Worktree']):
     '''
     path: Path
 
-    def __init__(self, frontend: 'Worktree', path: Path, /, **kwargs):
-        super().__init__(frontend, **kwargs)
+    def __init__(self, path: Path, /, **kwargs):
+        super().__init__(**kwargs)
         self.path = path
 
     @abstractmethod
