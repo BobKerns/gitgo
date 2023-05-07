@@ -30,5 +30,10 @@
     "workspace.isHidden": true,
     "explorerExclude.backup": {
 
-    }
+    },
+    "python.testing.pytestArgs": [
+        "tests"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
 }
